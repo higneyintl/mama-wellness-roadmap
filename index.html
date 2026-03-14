@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mama Wellness — Product Roadmap</title>
+  <style>
+    :root {
+      --bg:#fdf6f0; --card:#ffffff; --navy:#1c2b4a; --gold:#c09a5a;
+      --rose:#e8617a; --sage:#5a9e7c; --lavender:#8b7fd4; --peach:#f4a261;
+      --text1:#1c2b4a; --text2:#5a6070; --border:#eae3da;
+      --shadow:0 2px 16px rgba(28,43,74,0.07);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);color:var(--text1);min-height:100vh;}
+
+    /* Header */
+    .header{background:linear-gradient(135deg,var(--navy) 0%,#2d4270 100%);
+      color:#fff;padding:32px 24px 48px;text-align:center;position:relative;overflow:hidden;}
+    .header::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:32px;
+      background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%);}
+    .header-emoji{font-size:40px;margin-bottom:8px;}
+    .header h1{font-size:24px;font-weight:800;letter-spacing:-0.5px;}
+    .header p{font-size:13px;opacity:0.75;margin-top:6px;}
+    .header-links{margin-top:14px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    .header-link{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);
+      border-radius:20px;padding:6px 14px;font-size:11px;color:#fff;text-decoration:none;
+      backdrop-filter:blur(4px);transition:background 0.2s;}
+    .header-link:hover{background:rgba(255,255,255,0.25);}
+
+    /* Progress bar */
+    .progress-wrap{max-width:600px;margin:24px auto 0;padding:0 20px;}
+    .progress-label{display:flex;justify-content:space-between;font-size:12px;
+      color:var(--text2);margin-bottom:6px;}
+    .progress-bar{height:8px;background:var(--border);border-radius:8px;overflow:hidden;}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--gold));
+      border-radius:8px;transition:width 0.5s ease;}
+
+    /* Tabs */
+    .tabs{display:flex;gap:0;max-width:780px;margin:28px auto 0;padding:0 16px;
+      border-bottom:2px solid var(--border);}
+    .tab-btn{padding:10px 18px;font-size:13px;font-weight:600;color:var(--text2);
+      background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;
+      margin-bottom:-2px;transition:all 0.2s;}
+    .tab-btn.active{color:var(--navy);border-bottom-color:var(--rose);}
+    .tab-btn:hover{color:var(--navy);}
+
+    /* Sections */
+    .content{max-width:780px;margin:0 auto;padding:20px 16px 60px;}
+    .section{margin-bottom:28px;}
+    .section-title{font-size:13px;font-weight:800;text-transform:uppercase;
+      letter-spacing:0.8px;color:var(--text2);margin-bottom:10px;
+      display:flex;align-items:center;gap:8px;}
+    .section-count{background:var(--border);border-radius:12px;padding:2px 8px;
+      font-size:10px;color:var(--text2);font-weight:700;}
+
+    /* Feature cards */
+    .feature-list{display:flex;flex-direction:column;gap:6px;}
+    .feature-item{background:var(--card);border:1.5px solid var(--border);
+      border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;
+      gap:12px;cursor:pointer;transition:all 0.15s;box-shadow:var(--shadow);}
+    .feature-item:hover{border-color:var(--gold);}
+    .feature-item.done{background:#f0fbf5;border-color:#a8e6c5;}
+    .feature-item.done .feature-text{color:var(--text2);text-decoration:line-through;
+      text-decoration-color:#a8e6c5;}
+    .check-box{width:20px;height:20px;border-radius:6px;border:2px solid var(--border);
+      flex-shrink:0;display:flex;align-items:center;justify-content:center;
+      font-size:12px;margin-top:1px;transition:all 0.2s;background:#fff;}
+    .feature-item.done .check-box{background:var(--sage);border-color:var(--sage);color:#fff;}
+    .feature-text{font-size:13px;font-weight:500;color:var(--text1);line-height:1.4;}
+    .feature-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;
+      margin-top:4px;display:inline-block;}
+    .tag-core{background:#ffe4c4;color:#92400e;}
+    .tag-content{background:#e0f2fe;color:#0369a1;}
+    .tag-tech{background:#f3e8ff;color:#6b21a8;}
+    .tag-ux{background:#fce7f3;color:#9d174d;}
+
+    /* Vision panel */
+    .vision-card{background:linear-gradient(135deg,#1c2b4a,#2d4270);color:#fff;
+      border-radius:16px;padding:24px;margin-bottom:20px;}
+    .vision-card h3{font-size:16px;font-weight:800;margin-bottom:12px;}
+    .vision-card p{font-size:13px;line-height:1.7;opacity:0.85;margin-bottom:10px;}
+    .vision-card .principle{background:rgba(255,255,255,0.1);border-radius:10px;
+      padding:12px 14px;font-size:13px;font-style:italic;opacity:0.9;margin-top:14px;
+      border-left:3px solid var(--gold);}
+
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+    .stat-card{background:var(--card);border:1.5px solid var(--border);border-radius:12px;
+      padding:14px;text-align:center;box-shadow:var(--shadow);}
+    .stat-val{font-size:28px;font-weight:800;color:var(--navy);}
+    .stat-lbl{font-size:11px;color:var(--text2);margin-top:2px;}
+
+    .hidden{display:none;}
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-emoji">🤱</div>
+  <h1>Mama & Baby Wellness</h1>
+  <p>Product roadmap — built live with Shameen's first baby</p>
+  <div class="header-links">
+    <a class="header-link" href="https://higneyintl.github.io/shameen-wellness/" target="_blank">🌸 Live App</a>
+    <a class="header-link" href="https://github.com/higneyintl/shameen-wellness" target="_blank">💻 App Repo</a>
+    <a class="header-link" href="https://github.com/higneyintl/mama-wellness-roadmap" target="_blank">📋 Roadmap Repo</a>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Overall progress</span>
+    <span id="progressText">0 / 0 features</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('all')">All</button>
+  <button class="tab-btn" onclick="showTab('built')">✅ Built</button>
+  <button class="tab-btn" onclick="showTab('next')">🏗️ Next Up</button>
+  <button class="tab-btn" onclick="showTab('backlog')">💡 Backlog</button>
+  <button class="tab-btn" onclick="showTab('vision')">🎯 Vision</button>
+</div>
+
+<div class="content">
+
+  <!-- STATS -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card"><div class="stat-val" id="statDone">0</div><div class="stat-lbl">Built ✅</div></div>
+    <div class="stat-card"><div class="stat-val" id="statNext">0</div><div class="stat-lbl">Next Up 🏗️</div></div>
+    <div class="stat-card"><div class="stat-val" id="statBacklog">0</div><div class="stat-lbl">Backlog 💡</div></div>
+  </div>
+
+  <!-- BUILT -->
+  <div class="section" id="sec-built">
+    <div class="section-title">✅ Already Built <span class="section-count" id="cnt-built"></span></div>
+    <div class="feature-list" id="list-built"></div>
+  </div>
+
+  <!-- NEXT UP -->
+  <div class="section" id="sec-next">
+    <div class="section-title">🏗️ Next Up <span class="section-count" id="cnt-next"></span></div>
+    <div class="feature-list" id="list-next"></div>
+  </div>
+
+  <!-- BACKLOG -->
+  <div class="section" id="sec-backlog">
+    <div class="section-title">💡 Backlog <span class="section-count" id="cnt-backlog"></span></div>
+    <div class="feature-list" id="list-backlog"></div>
+  </div>
+
+  <!-- VISION -->
+  <div class="section hidden" id="sec-vision">
+    <div class="vision-card">
+      <h3>🎯 The Gap This Fills</h3>
+      <p>Existing apps (What to Expect, BabyCenter) are information-heavy. Most moms use them just to see how many weeks they are. Real information comes from Instagram, videos, and AI. What's missing is a simple daily action guide — <strong>not articles, just: what do I do today?</strong></p>
+      <p><strong>Core value:</strong> "I don't need more information. I need to track what I'm actually doing each day."</p>
+      <div class="principle">"The app meets you where you are today, not where you were when you downloaded it."</div>
+    </div>
+    <div class="section-title" style="margin-top:20px;">Key Principles</div>
+    <div class="feature-list">
+      <div class="feature-item" style="cursor:default;">
+        <div class="feature-text">📈 <strong>Progressive</strong> — starts simple in early pregnancy, grows with you week by week</div>
+      </div>
+      <div class="feature-item" style="cursor:default;">
+        <div class="feature-text">🔄 <strong>Adaptive</strong> — preferences update any time, nothing locked in from onboarding</div>
+      </div>
+      <div class="feature-item" style="cursor:default;">
+        <div class="feature-text">✅ <strong>Action-first</strong> — daily tasks and tracking, not articles or information overload</div>
+      </div>
+      <div class="feature-item" style="cursor:default;">
+        <div class="feature-text">🌍 <strong>Inclusive</strong> — works for crunchy, mainstream, Christian, secular, Montessori, flexible moms</div>
+      </div>
+      <div class="feature-item" style="cursor:default;">
+        <div class="feature-text">🏫 <strong>Accessible</strong> — makes Montessori, EC, and intentional parenting approachable without expensive schools</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var FEATURES = [
+  // ── BUILT ──
+  {id:"f1",  bucket:"built", text:"🤰 Pregnancy tab — daily wellness tracking"},
+  {id:"f2",  bucket:"built", text:"💊 Prenatal vitamins — one-tap daily check-off"},
+  {id:"f3",  bucket:"built", text:"💧 Water intake — tap-glass tracker (goal: 8/day)"},
+  {id:"f4",  bucket:"built", text:"😴 Sleep tracker — +/- counter (goal: 7+ hours)"},
+  {id:"f5",  bucket:"built", text:"🚶 Movement / Walk — one-tap done"},
+  {id:"f6",  bucket:"built", text:"🥩 Protein Goal — one-tap done"},
+  {id:"f7",  bucket:"built", text:"👶 Kick Counts — tap counter with progress bar (28+ wks)"},
+  {id:"f8",  bucket:"built", text:"🙏 Rest & Prayer — one-tap done"},
+  {id:"f9",  bucket:"built", text:"🤸 Daily Stretches — trimester-appropriate with timers & reps"},
+  {id:"f10", bucket:"built", text:"⭕ Progress ring — reflects ALL daily items combined"},
+  {id:"f11", bucket:"built", text:"📊 Summary tab — weekly bar chart, 35-day heatmap, all-time stats"},
+  {id:"f12", bucket:"built", text:"8-item daily glance in Summary (vitamins, water, sleep, stretches…)"},
+  {id:"f13", bucket:"built", text:"👶 Baby Guide tab — daily activity + EC tip + development note"},
+  {id:"f14", bucket:"built", text:"🍼 Feed Log — breast/pump timer, oz input, diaper log, history"},
+  {id:"f15", bucket:"built", text:"⬅️➡️ Day navigation on all tabs (Pregnancy, Feed, Summary)"},
+  {id:"f16", bucket:"built", text:"Past days fully editable — retroactive logging"},
+  {id:"f17", bucket:"built", text:"Achievement badges (8 total) + streak + points + confetti"},
+
+  // ── NEXT UP ──
+  // Onboarding
+  {id:"n1",  bucket:"next", text:"Onboarding questionnaire — runs on first launch", tag:"ux"},
+  {id:"n2",  bucket:"next", text:"Settings screen — all preferences editable anytime (nothing locked in)", tag:"ux"},
+  {id:"n3",  bucket:"next", text:"Preference: Diapering approach (Traditional / EC / Combo)", tag:"ux"},
+  {id:"n4",  bucket:"next", text:"Preference: Faith / Mindfulness (Christian / Spiritual / Secular)", tag:"ux"},
+  {id:"n5",  bucket:"next", text:"Preference: Feeding approach (Breast / Pump / Formula / Combo)", tag:"ux"},
+  {id:"n6",  bucket:"next", text:"Preference: Early childhood method (Montessori / RIE / Waldorf / Attachment)", tag:"ux"},
+  {id:"n7",  bucket:"next", text:"App language adapts instantly when preference changes (e.g. Prayer → Affirmations)", tag:"ux"},
+  {id:"n8",  bucket:"next", text:"EC features toggle on/off based on diapering preference", tag:"ux"},
+  // Exercise library
+  {id:"n9",  bucket:"next", text:"Browse & add exercises from a larger library", tag:"core"},
+  {id:"n10", bucket:"next", text:"Remove / hide exercises from daily routine (can re-add)", tag:"core"},
+  {id:"n11", bucket:"next", text:"Reorder exercises in routine", tag:"core"},
+  {id:"n12", bucket:"next", text:"Create custom exercises — name, timer/reps, emoji", tag:"core"},
+  {id:"n13", bucket:"next", text:"Library: pelvic tilts, butterfly, wall squats, clamshells, birth ball, and more", tag:"content"},
+  // Week-by-week progression
+  {id:"n14", bucket:"next", text:"Week 4–12: Minimal early pregnancy checks (vitamins, first OB appt, cut caffeine)", tag:"core"},
+  {id:"n15", bucket:"next", text:"Week 13–26: Second trimester checks (anatomy scan, glucose test, kick counts unlock)", tag:"core"},
+  {id:"n16", bucket:"next", text:"Week 37–40: Hospital bag checklist + weekly OB reminder", tag:"core"},
+  {id:"n17", bucket:"next", text:"Postpartum mode — auto-switches at birth date (feed log, EC, recovery checks)", tag:"core"},
+  // Baby activities
+  {id:"n18", bucket:"next", text:"Montessori baby activities by week of life (B&W cards, treasure baskets, mirror play)", tag:"content"},
+  {id:"n19", bucket:"next", text:"RIE + Waldorf activity libraries in Baby Guide", tag:"content"},
+  {id:"n20", bucket:"next", text:"Activity type adapts to chosen childhood approach from settings", tag:"core"},
+
+  // ── BACKLOG ──
+  {id:"b1",  bucket:"backlog", text:"Weight tracking chart", tag:"core"},
+  {id:"b2",  bucket:"backlog", text:"Blood pressure log", tag:"core"},
+  {id:"b3",  bucket:"backlog", text:"Glucose tracking (gestational diabetes)", tag:"core"},
+  {id:"b4",  bucket:"backlog", text:"Mood tracker", tag:"core"},
+  {id:"b5",  bucket:"backlog", text:"Sleep quality rating (beyond just hours)", tag:"core"},
+  {id:"b6",  bucket:"backlog", text:"Custom daily notes / journal entry", tag:"core"},
+  {id:"b7",  bucket:"backlog", text:"Milestone markers (first kick felt, ultrasound, etc.)", tag:"core"},
+  {id:"b8",  bucket:"backlog", text:"First trimester symptom log (nausea, fatigue, spotting)", tag:"core"},
+  {id:"b9",  bucket:"backlog", text:"Appointment log + next OB visit countdown", tag:"core"},
+  {id:"b10", bucket:"backlog", text:"Partner view — share daily progress with spouse/support person", tag:"ux"},
+  {id:"b11", bucket:"backlog", text:"Export weekly report as PDF", tag:"ux"},
+  {id:"b12", bucket:"backlog", text:"Share a day's summary as an image (social)", tag:"ux"},
+  {id:"b13", bucket:"backlog", text:"Cloud sync / backup (currently localStorage only)", tag:"tech"},
+  {id:"b14", bucket:"backlog", text:"PWA — installable on phone home screen without app store", tag:"tech"},
+  {id:"b15", bucket:"backlog", text:"Push notifications for daily reminders (requires PWA/native)", tag:"tech"},
+  {id:"b16", bucket:"backlog", text:"App store launch (iOS / Android)", tag:"tech"},
+  {id:"b17", bucket:"backlog", text:"User accounts / login", tag:"tech"},
+  {id:"b18", bucket:"backlog", text:"Hospital bag checklist (unlocks ~35 weeks)", tag:"content"},
+  {id:"b19", bucket:"backlog", text:"Birth plan builder", tag:"content"},
+  {id:"b20", bucket:"backlog", text:"Postpartum meal ideas — nutrition for recovery + breastfeeding", tag:"content"},
+  {id:"b21", bucket:"backlog", text:"Baby weight tracking (weigh-ins + growth chart)", tag:"core"},
+  {id:"b22", bucket:"backlog", text:"Mom's own postpartum recovery checks (bleeding, soreness, mood, pelvic floor)", tag:"core"},
+];
+
+var TAG_LABELS = {core:"Core",content:"Content",tech:"Tech",ux:"UX"};
+var TAG_CLASSES = {core:"tag-core",content:"tag-content",tech:"tag-tech",ux:"tag-ux"};
+
+function getChecked() {
+  var v = localStorage.getItem("roadmap_checked");
+  return v ? JSON.parse(v) : {};
+}
+function setChecked(map) { localStorage.setItem("roadmap_checked", JSON.stringify(map)); }
+
+function toggleItem(id) {
+  var map = getChecked();
+  // Only allow toggling next/backlog items (built items are always checked)
+  var f = FEATURES.find(function(x){return x.id===id;});
+  if (!f || f.bucket === "built") return;
+  if (map[id]) delete map[id]; else map[id] = true;
+  setChecked(map);
+  render();
+}
+
+function render() {
+  var checked = getChecked();
+  // Mark all built as checked
+  FEATURES.filter(function(f){return f.bucket==="built";}).forEach(function(f){checked[f.id]=true;});
+
+  var buckets = {built:[], next:[], backlog:[]};
+  FEATURES.forEach(function(f){ buckets[f.bucket].push(f); });
+
+  function renderList(listId, features) {
+    var el = document.getElementById(listId);
+    if (!el) return;
+    el.innerHTML = "";
+    features.forEach(function(f) {
+      var done = !!checked[f.id];
+      var div = document.createElement("div");
+      div.className = "feature-item" + (done?" done":"");
+      div.onclick = function(){toggleItem(f.id);};
+      var cb = document.createElement("div");
+      cb.className = "check-box";
+      cb.textContent = done ? "✓" : "";
+      var right = document.createElement("div");
+      var txt = document.createElement("div");
+      txt.className = "feature-text";
+      txt.textContent = f.text;
+      right.appendChild(txt);
+      if (f.tag) {
+        var tag = document.createElement("span");
+        tag.className = "feature-tag " + (TAG_CLASSES[f.tag]||"");
+        tag.textContent = TAG_LABELS[f.tag]||f.tag;
+        right.appendChild(tag);
+      }
+      div.appendChild(cb); div.appendChild(right);
+      el.appendChild(div);
+    });
+  }
+
+  renderList("list-built", buckets.built);
+  renderList("list-next", buckets.next);
+  renderList("list-backlog", buckets.backlog);
+
+  document.getElementById("cnt-built").textContent = buckets.built.length;
+  document.getElementById("cnt-next").textContent = buckets.next.length;
+  document.getElementById("cnt-backlog").textContent = buckets.backlog.length;
+
+  var totalDone = FEATURES.filter(function(f){return !!checked[f.id];}).length;
+  var total = FEATURES.length;
+  document.getElementById("progressText").textContent = totalDone+" / "+total+" features";
+  document.getElementById("progressFill").style.width = Math.round((totalDone/total)*100)+"%";
+  document.getElementById("statDone").textContent = buckets.built.length;
+  document.getElementById("statNext").textContent = buckets.next.filter(function(f){return !!checked[f.id];}).length+"/"+buckets.next.length;
+  document.getElementById("statBacklog").textContent = buckets.backlog.length;
+}
+
+function showTab(tab) {
+  document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
+  event.target.classList.add("active");
+  var sections = ["built","next","backlog","vision","stats"];
+  sections.forEach(function(s){
+    var el = document.getElementById("sec-"+s) || document.getElementById("statsRow");
+    if (!el) return;
+    if (tab==="all") { el.classList.remove("hidden"); return; }
+    if (tab==="vision") {
+      el.classList.toggle("hidden", s!=="vision");
+    } else {
+      el.classList.toggle("hidden", s!==tab && s!=="stats");
+    }
+  });
+  // Special: statsRow
+  var sr = document.getElementById("statsRow");
+  if (tab==="vision") sr.classList.add("hidden");
+  else sr.classList.remove("hidden");
+}
+
+render();
+</script>
+</body>
+</html>
